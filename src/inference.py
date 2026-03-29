@@ -64,7 +64,7 @@ def build_next_day_features(
             f"Use forecast_date={expected_forecast_date.date()} for {store}."
         )
 
-    history = series_df.set_index("date")["sales"].sort_index().asfreq("D")
+    history = series_df.set_index("date")["sales"].groupby(level=0).mean().sort_index().asfreq("D")
     if history.isna().any():
         raise ValueError("Sales history has missing dates; cannot derive lag features safely.")
 
